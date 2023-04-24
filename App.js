@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, Image, Dimensions } from 'react-native';
+import { Text, View, Image, Dimensions, Button, Picker } from 'react-native';
 import styles from './src/ui/styles'
 
 const mock = [
@@ -41,7 +41,7 @@ const mock = [
   {
     'id': 6,
     'name': 'Toyota',
-    'models': 'Supra',
+    'models': 'Supra MK4',
     'color': 'Black',
     'img': 'https://i.pinimg.com/736x/25/f5/49/25f549d75bb0e6332d6f48f8e201493c.jpg'
   },
@@ -77,33 +77,70 @@ const mock = [
 
 export default function App() {
 
-  const [ getDataAPI, setDataAPI ] = useState([])
+  const [ getData, setData ] = useState(null)
+  const [ getTable, setTable ] = useState(0)
+  const [ getScore, setScore ] = useState(0)
+  const [ getStyle, setStyle ] = useState(styles.null)
 
-  function getLoadAPI(){
-    return setDataAPI(mock)
+  function getLoadTable(){
+    return setData(mock[getTable])
+  }
+
+  function getMockLength(){
+    return (mock.length - 1)
+  }
+
+  function getCheckInfos(){
+    if(getSelectedValue !== 'none'){
+      if(getSelectedValue === getData?.models){
+        console.log('Acertou!')
+        setTable((getTable === getMockLength() ? 0 : getTable + 1))
+        setSelectedValue('none')
+        setScore((getScore >= 0 ? getScore + 1 : 0))
+        setStyle(styles.success)
+      }else{
+        console.log('Errou!')
+        setTable((getTable === getMockLength() ? 0 : getTable + 1))
+        setSelectedValue('none')
+        setStyle(styles.error)
+      }
+    }else{
+      console.log('Selecione uma opção')
+    }
   }
 
   useEffect(() => {
-    getLoadAPI()
-  }, [])
+    getLoadTable( getTable )
+  }, [getTable])
 
   const dimensions = Dimensions.get('window');
   const imageHeight = Math.round(dimensions.width * 10 / 15);
   const imageWidth = dimensions.width;
 
+  const [ getSelectedValue, setSelectedValue ] = useState('none');
+
   return (
     <View style={styles.body}>
-      <View style={{padding: 20,}}>
-        {getDataAPI.map((item, index) => {
-          return (
-            <View key={index}>
-              <Text>{item.name}</Text>
-              <Text>{item.models}</Text>
-              <Text>{item.color}</Text>
-              <Image source={{uri: item.img}} style={{width: imageWidth, height: imageHeight}} />
-            </View>
-          )
-        })}
+      <View>
+        <Image source={{uri: getData?.img}} style={{width: imageWidth, height: imageHeight}} />
+        
+        <Picker selectedValue={getSelectedValue} style={{ height: 50, width: 150 }} onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+          <Picker.Item label='Selecione...' value='none' />
+          <Picker.Item label='Corolla' value='Corolla' />
+          <Picker.Item label='Focus Hatch' value='Focus Hatch' />
+          <Picker.Item label='F40' value='F40' />
+          <Picker.Item label='Gol G4' value='Gol G4' />
+          <Picker.Item label='i30' value='i30' />
+          <Picker.Item label='Maybach S650' value='Maybach S650' />
+          <Picker.Item label='P1' value='P1' />
+          <Picker.Item label='RX7' value='RX7' />
+          <Picker.Item label='Supra MK4' value='Supra MK4' />
+          <Picker.Item label='X6' value='X6' />
+        </Picker>
+
+        <Button title={getTable >= 9 ? 'Inicio' : 'Proximo'} onPress={() => getCheckInfos()} />
+
+        <Text style={getStyle}>Acertos: {getScore}/10</Text>
       </View>
     </View>
   );
