@@ -8,6 +8,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       width: '100%',
     },
+    null:{
+      color: '#000',
+    },
+    error:{
+      color: 'red',
+    },
+    success:{
+      color: 'green',
+    }
 });
 
 export default styles;
