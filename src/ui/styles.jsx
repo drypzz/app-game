@@ -61,11 +61,28 @@ const styles = StyleSheet.create({
     pickerSelectedRowStyle: {
       backgroundColor: 'rgba(255,255,255,0.2)',
     },
-    // dropdown2searchInputStyleStyle: {
-    //   backgroundColor: 'rgb(53, 153, 204)',
-    //   borderBottomWidth: 1,
-    //   borderBottomColor: 'rgba(255, 255, 255, .1)',
-    // },
+
+    //Rgeister
+    contentBox: {
+      padding: 25,
+      borderRadius: 12,
+      shadowColor: '#ccc',
+      shadowOffset: { width: 0, height: 12 },
+      backgroundColor: 'rgba(0, 0, 0, 0.09)',
+    },
+    input:{
+      margin: 5,
+    },
+    btnRegister:{
+      marginTop: '10px',
+      backgroundColor: 'rgb(33, 150, 243)',
+      borderRadius: '5px',
+    },
+    btnPage:{
+      backgroundColor: 'rgb(33, 150, 243)',
+      borderRadius: '5px',
+      padding: '2px',
+    }
 });
 
 export default styles;
