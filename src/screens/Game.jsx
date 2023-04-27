@@ -58,7 +58,13 @@ export default function Games() {
 
   return (
     <View style={styles.container}>
-      
+
+      <View style={{margin: 5}}>
+        <Text style={styles.title}>
+          Qual é o Modelo do veículo?
+        </Text>
+      </View>
+
       <View style={styles.card}>
         
         <View style={styles.cardItem}>

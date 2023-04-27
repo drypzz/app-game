@@ -8,20 +8,28 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Game from './screens/Game';
 import Register from './screens/Register';
 import Login from './screens/Login';
+import Loading from './screens/Loading';
 
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen
-          name='TabsNavigation'
-          component={TabsNavigation}
-          options={{ headerShown: true }}
+      <Stack.Navigator>
+       <Stack.Screen
+          name='Loading'
+          component={Loading}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
-          name='Register'
+          name='Logar-se'
+          component={TabsNavigation}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Registrar-se'
           component={Register}
           options={{ headerShown: true }}
         />
@@ -39,19 +47,19 @@ const Tabs = createMaterialBottomTabNavigator();
 function TabsNavigation() {
   return (
     <Tabs.Navigator
-      initialRouteName='Login'
-      activeColor='#000'
-      inactiveColor='#000'
-      barStyle={{ backgroundColor: 'rgba(0, 194, 204, 0.1)' }}
+      initialRouteName='Logar-se'
+      activeColor='rgba(33, 150, 243, .9)'
+      inactiveColor='#fff'
+      barStyle={{ backgroundColor: 'rgba(33, 150, 243, .1)' }}
     >
       <Tabs.Screen
         style={{ fontWeight: 'bold' }}
-        name='Login'
+        name='Logar-se'
         component={Login}
         options={{
-          tabBarLabel: 'Login',
+          tabBarLabel: 'Logar-se',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='home' color={'#00c2cc'} size={26} />
+            <MaterialCommunityIcons name='home' color={'rgb(33, 150, 243)'} size={26} />
           ),
         }}
       />

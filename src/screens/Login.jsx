@@ -1,68 +1,88 @@
-import { useState } from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase';
+
 import styles from '../ui/styles';
 
+import * as Animatable from 'react-native-animatable';
+
 export default function Login({ navigation }) {
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-  
-    function handleLogin() {
-      if (email !== '' && senha !== '') {
-        signInWithEmailAndPassword(auth, email, senha)
-          .then((userCredential) => {
-            console.log('Usuário logado com sucesso!');
-            navigation.navigate('Game');
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        console.log('Insira todas as informações');
-      }
+  const [getEmail, setEmail] = useState('');
+  const [getPassword, setPassword] = useState('');
+
+  const [isloading, setLoading] = React.useState('login')
+  const [isloadingBol, setLoadingBol] = React.useState(false)
+
+  const [getTextButton, setTextButton] = React.useState('Entrar');
+
+  function handleLogin() {
+    if (getEmail !== '' && getPassword !== '') {
+      setLoading('loading')
+      setLoadingBol(true)
+      setTextButton('Carregando...')
+      setTimeout(() => {
+        signInWithEmailAndPassword(auth, getEmail, getPassword)
+        .then((userCredential) => {
+          console.log('Usuário logado com sucesso!');
+          navigation.navigate('Game');
+          setEmail('');
+          setPassword('');
+          setLoading('login')
+          setLoadingBol(false)
+          setTextButton('Entrar')
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading('login')
+          setLoadingBol(false)
+          setTextButton('Entrar')
+        });
+      }, 4000);
+    } else {
+      console.log('Insira todas as informações');
     }
-  
-    return (
-      <View style={styles.container}>
-        <View style={styles.contentBox}>
-          <View
-            style={{
-              padding: 25,
-              backgroundColor: 'rgba( 0, 0, 0, 0.09)',
-              shadowColor: '#ccc',
-              shadowOffset: { width: 0, height: 12 },
-              borderRadius: 12,
-            }}>
-            <TextInput
-              label='Email'
-              mode='outlined'
-              value={email}
-              onChangeText={setEmail}
-              placeholder='Digite...'
-            />
-            <TextInput
-              label='Senha'
-              mode='outlined'
-              value={senha}
-              onChangeText={setSenha}
-              placeholder='Digite...'
-              secureTextEntry={true}
-            />
-            <Button
-              style={styles.btnRegister}
-              labelStyle={{ color: '#fff' }}
-              onPress={handleLogin}>
-              Entrar
-            </Button>
-            <View style={{margin: 5}}>
-              <Button style={styles.btnPage} labelStyle={{ color: '#fff' }} onPress={() => {navigation.navigate("Register")}}>
-                Não tem uma conta? Registre-se
-              </Button>
-            </View>
-          </View>
-        </View>
-      </View>
-    );
   }
+  
+  return (
+    <View style={styles.container}>
+
+      <Animatable.View animation='fadeInUp' delay={500} style={{width:'90%', justifyContent: 'center', alignItems: 'center'}}>
+        
+        <View style={styles.form}>
+
+          <View style={styles.formContent}>
+            <Text style={styles.title}>
+              Logar-se
+            </Text>
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined'/>
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined'/>
+          </View>
+
+          <View style={styles.formContent}>
+            <Button icon={isloading} disabled={isloadingBol} loading={isloadingBol} style={styles.formButton} labelStyle={{ color: '#fff' }} onPress={handleLogin}>
+              {getTextButton}
+            </Button>
+          </View>
+
+          <View style={styles.formContent}>
+            <Text>
+              Não tem uma conta?{' '}<Text style={{ color: '#1E90FF' }} onPress={() => navigation.navigate('Registrar-se')}>Cadastre-se.</Text>
+            </Text>
+          </View>
+
+        </View>
+
+      </Animatable.View>
+
+    </View>
+  );
+};

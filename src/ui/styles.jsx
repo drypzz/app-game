@@ -7,6 +7,13 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    title:{
+      fontSize: 20,
+      fontWeight: 'bold',
+      borderBottomColor: 'rgba(0, 0, 0, .4)',
+      borderBottomWidth: 1,
+      paddingBottom: 8,
+    },
 
     // card
     card: {
@@ -62,26 +69,18 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(255,255,255,0.2)',
     },
 
-    //Rgeister
-    contentBox: {
-      padding: 25,
-      borderRadius: 12,
-      shadowColor: '#ccc',
-      shadowOffset: { width: 0, height: 12 },
-      backgroundColor: 'rgba(0, 0, 0, 0.09)',
+    //form
+    form:{
+      width: '80%',
+      padding: 10,
     },
-    input:{
+    formContent:{
       margin: 5,
+      textAlign: 'center',
     },
-    btnRegister:{
-      marginTop: '10px',
-      backgroundColor: 'rgb(33, 150, 243)',
-      borderRadius: '5px',
-    },
-    btnPage:{
-      backgroundColor: 'rgb(33, 150, 243)',
-      borderRadius: '5px',
-      padding: '2px',
+    formButton:{
+      backgroundColor: '#1E90FF',
+      borderRadius: 5,
     }
 });
 

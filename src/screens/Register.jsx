@@ -1,29 +1,48 @@
-import { useState } from 'react';
-import { auth } from '../config/firebase';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
+
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 import styles from '../ui/styles';
 
-export default function Register({ navigation }) {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [senhac, setSenhac] = useState('');
+import * as Animatable from 'react-native-animatable';
+
+export default function Register() {
+  const [getEmail, setEmail] = useState('');
+  const [getPassword, setPassword] = useState('');
+  const [getPasswordC, setPasswordC] = useState('');
+
+  const [isloading, setLoading] = React.useState('account')
+  const [isloadingBol, setLoadingBol] = React.useState(false)
+
+  const [getTextButton, setTextButton] = React.useState('Registrar');
 
   function handleRegister() {
-    if (nome !== '' && email !== '' && senha !== '' && senhac !== '') {
-      if (senha !== senhac) {
-        return console.log('Senha não confere');
+    if (getEmail !== '' && getPassword !== '' && getPasswordC !== '') {
+      if (getPassword !== getPasswordC) {
+        console.log('Senha não confere')
+        return;
       }
-      createUserWithEmailAndPassword(auth, email, senha)
+      setLoading('loading')
+      setLoadingBol(true)
+      setTextButton('Carregando...')
+      setTimeout(() => {
+        createUserWithEmailAndPassword(auth, getEmail, getPassword)
         .then((userCredential) => {
           console.log('Usuário cadastrado com sucesso');
+          setLoading('account');
+          setEmail('');
+          setPassword('');
+          setPasswordC('');
+          setLoadingBol(false);
+          setTextButton('Registrar');
         })
         .catch((error) => {
           console.log(error);
         });
+      }, 4000);
     } else {
       console.log('Preencha todas as informções');
       return;
@@ -32,49 +51,45 @@ export default function Register({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentBox}>
-        <TextInput
-          styles={styles.input}
-          label={'Nome'}
-          placeholder={'Digite...'}
-          value={nome}
-          onChangeText={setNome}
-          mode='outlined'
-        />
-        <TextInput
-          styles={styles.input}
-          label={'Email'}
-          placeholder={'Digite...'}
-          value={email}
-          onChangeText={setEmail}
-          mode='outlined'
-        />
-        <TextInput
-          styles={styles.input}
-          label={'Senha'}
-          placeholder={'Digite...'}
-          value={senha}
-          secureTextEntry={true}
-          onChangeText={setSenha}
-          mode='outlined'
-        />
-        <TextInput
-          styles={styles.input}
-          label={'Confirmar Senha'}
-          placeholder={'Digite...'}
-          value={senhac}
-          secureTextEntry={true}
-          onChangeText={setSenhac}
-          mode='outlined'
-        />
-        <Button
-          style={styles.btnRegister}
-          labelStyle={{ color: '#fff' }}
-          onPress={handleRegister}
-        >
-          Registrar
-        </Button>
-      </View>
+      
+      <Animatable.View animation='fadeInDown' delay={500} style={{width:'90%', justifyContent: 'center', alignItems: 'center'}}>
+        
+        <View style={styles.form}>
+
+          <View style={styles.formContent}>
+            <Text style={styles.title}>
+              Registrar-se
+            </Text>
+          </View>
+
+          <View style={styles.formContent}>
+            <Text>
+              Insira todas as informações para se registrar.
+            </Text>
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined'/>
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined'/>
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Confirmar Senha'} placeholder={'Digite...'} value={getPasswordC} secureTextEntry={true} onChangeText={setPasswordC} mode='outlined'/>
+          </View>
+
+          <View style={styles.formContent}>
+            <Button icon={isloading} disabled={isloadingBol} loading={isloadingBol} style={styles.formButton} labelStyle={{ color: '#fff' }} onPress={handleRegister}>
+              {getTextButton}
+            </Button>
+          </View>
+
+        </View>
+
+      </Animatable.View>
+
     </View>
   );
 }
