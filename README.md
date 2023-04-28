@@ -18,7 +18,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - Este é um projeto em Desenvolvimento Para Disp. Movel
 
-## 🔧 Depencias Atual
+## 🔧 Dependências Atual
 
 ```cmd
 npm i firebase react-native-animatable react-native-picker-select react-native-safe-area-context react-native-select-dropdown react-native-web react-native-vector-icons react-native-screens react-native-paper @react-navigation/native @react-navigation/native-stack @react-navigation/material-bottom-tabs @expo/vector-icons @expo/webpack-config @expo/ngrok expo-status-bar expo
