@@ -66,7 +66,11 @@ export default function Games() {
       </View>
 
       <View style={styles.card}>
-        
+
+        <View style={styles.cardItem}>
+          <Text>{getData?.id}/10</Text>
+        </View>
+
         <View style={styles.cardItem}>
           <Image source={{uri: getData?.img}} style={{width: 300, height: 300}} />
         </View>
@@ -100,7 +104,7 @@ export default function Games() {
           <Button title={getTable >= getAllTables() ? 'Inicio' : 'Proximo'} onPress={() => getCheckInfos()} />
         </View>
         <View style={styles.cardItem}>
-          <Button title='Resetar' onPress={() => setResetTable()} />
+            <Button title='Resetar' onPress={() => setResetTable()} />
         </View>
 
         <View style={styles.cardItem}>

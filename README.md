@@ -21,7 +21,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 ## 🔧 Depencias Atual
 
 ```cmd
-npx expo i firebase react-native-animatable react-native-picker-select react-native-safe-area-context react-native-select-dropdown react-native-web react-native-vector-icons react-native-screens react-native-paper @react-navigation/native @react-navigation/native-stack @react-navigation/material-bottom-tabs @expo/vector-icons @expo/webpack-config @expo/ngrok expo-status-bar expo
+npm i firebase react-native-animatable react-native-picker-select react-native-safe-area-context react-native-select-dropdown react-native-web react-native-vector-icons react-native-screens react-native-paper @react-navigation/native @react-navigation/native-stack @react-navigation/material-bottom-tabs @expo/vector-icons @expo/webpack-config @expo/ngrok expo-status-bar expo
 ```
 
 ```json
@@ -53,4 +53,4 @@ npx expo i firebase react-native-animatable react-native-picker-select react-nat
 
 ---
 
-Feito com ♥ by drypzz
+Feito com ♥ by drypzz and function404
