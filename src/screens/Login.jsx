@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
@@ -18,6 +18,16 @@ export default function Login({ navigation }) {
 
   const [getTextButton, setTextButton] = React.useState('Entrar');
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate('Game');
+      }
+    });
+    return unsubscribe;
+  }, [])
+
+
   function handleLogin() {
     if (getEmail !== '' && getPassword !== '') {
       setLoading('loading')
@@ -25,32 +35,32 @@ export default function Login({ navigation }) {
       setTextButton('Carregando...')
       setTimeout(() => {
         signInWithEmailAndPassword(auth, getEmail, getPassword)
-        .then((userCredential) => {
-          console.log('Usuário logado com sucesso!');
-          navigation.navigate('Game');
-          setEmail('');
-          setPassword('');
-          setLoading('login')
-          setLoadingBol(false)
-          setTextButton('Entrar')
-        })
-        .catch((error) => {
-          console.log(error);
-          setLoading('login')
-          setLoadingBol(false)
-          setTextButton('Entrar')
-        });
-      }, 4000);
+          .then((userCredential) => {
+            console.log('Usuário logado com sucesso!');
+            navigation.navigate('Game');
+            setEmail('');
+            setPassword('');
+            setLoading('login')
+            setLoadingBol(false)
+            setTextButton('Entrar')
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading('login')
+            setLoadingBol(false)
+            setTextButton('Entrar')
+          });
+      }, 1000);
     } else {
       console.log('Insira todas as informações');
     }
   }
-  
+
   return (
     <View style={styles.container}>
 
-      <Animatable.View animation='fadeInUp' delay={500} style={{width:'90%', justifyContent: 'center', alignItems: 'center'}}>
-        
+      <Animatable.View animation='fadeInUp' delay={500} style={{ width: '90%', justifyContent: 'center', alignItems: 'center' }}>
+
         <View style={styles.form}>
 
           <View style={styles.formContent}>
@@ -60,11 +70,11 @@ export default function Login({ navigation }) {
           </View>
 
           <View style={styles.formContent}>
-            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined'/>
+            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined' />
           </View>
 
           <View style={styles.formContent}>
-            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined'/>
+            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined' />
           </View>
 
           <View style={styles.formContent}>

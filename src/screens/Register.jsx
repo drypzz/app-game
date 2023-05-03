@@ -3,13 +3,15 @@ import { View, Text } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../config/firebase';
+import { auth, db } from '../config/firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 import styles from '../ui/styles';
 
 import * as Animatable from 'react-native-animatable';
 
 export default function Register() {
+  const [getName, setName] = useState('');
   const [getEmail, setEmail] = useState('');
   const [getPassword, setPassword] = useState('');
   const [getPasswordC, setPasswordC] = useState('');
@@ -19,8 +21,10 @@ export default function Register() {
 
   const [getTextButton, setTextButton] = React.useState('Registrar');
 
+  const [getError, setError] = useState(null);
+
   function handleRegister() {
-    if (getEmail !== '' && getPassword !== '' && getPasswordC !== '') {
+    if (getEmail !== '' && getPassword !== '' && getPasswordC !== '' && getName !== '') {
       if (getPassword !== getPasswordC) {
         console.log('Senha não confere')
         return;
@@ -30,18 +34,29 @@ export default function Register() {
       setTextButton('Carregando...')
       setTimeout(() => {
         createUserWithEmailAndPassword(auth, getEmail, getPassword)
-        .then((userCredential) => {
-          console.log('Usuário cadastrado com sucesso');
-          setLoading('account');
-          setEmail('');
-          setPassword('');
-          setPasswordC('');
-          setLoadingBol(false);
-          setTextButton('Registrar');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((userCredential) => {
+            console.log('Usuário criado com sucesso!');
+            const docRef = addDoc(collection(db, 'users'), {
+              email: getEmail,
+              uid: userCredential.user.uid,
+              name: getName,
+              dataDeCadastro: new Date(),
+            }).then((docRef) => {
+              console.log('Usuário cadastrado com sucesso', docRef.id);
+              setLoading('account');
+              setEmail('');
+              setPassword('');
+              setPasswordC('');
+              setName('');
+              setLoadingBol(false);
+              setTextButton('Registrar');
+            })
+          }).catch((error) => {
+            console.log('Erro ao criar usuário!', error);
+            setTextButton('Registrar');
+            setLoading('account');
+            setLoadingBol(false);
+          });
       }, 4000);
     } else {
       console.log('Preencha todas as informções');
@@ -51,9 +66,9 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      
-      <Animatable.View animation='fadeInDown' delay={500} style={{width:'90%', justifyContent: 'center', alignItems: 'center'}}>
-        
+
+      <Animatable.View animation='fadeInDown' delay={500} style={{ width: '90%', justifyContent: 'center', alignItems: 'center' }}>
+
         <View style={styles.form}>
 
           <View style={styles.formContent}>
@@ -69,15 +84,19 @@ export default function Register() {
           </View>
 
           <View style={styles.formContent}>
-            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined'/>
+            <TextInput styles={styles.input} label={'Nome'} placeholder={'Digite...'} value={getName} onChangeText={setName} mode='outlined' />
           </View>
 
           <View style={styles.formContent}>
-            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined'/>
+            <TextInput styles={styles.input} label={'Email'} placeholder={'Digite...'} value={getEmail} onChangeText={setEmail} mode='outlined' />
           </View>
 
           <View style={styles.formContent}>
-            <TextInput styles={styles.input} label={'Confirmar Senha'} placeholder={'Digite...'} value={getPasswordC} secureTextEntry={true} onChangeText={setPasswordC} mode='outlined'/>
+            <TextInput styles={styles.input} label={'Senha'} placeholder={'Digite...'} value={getPassword} secureTextEntry={true} onChangeText={setPassword} mode='outlined' />
+          </View>
+
+          <View style={styles.formContent}>
+            <TextInput styles={styles.input} label={'Confirmar Senha'} placeholder={'Digite...'} value={getPasswordC} secureTextEntry={true} onChangeText={setPasswordC} mode='outlined' />
           </View>
 
           <View style={styles.formContent}>

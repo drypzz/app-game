@@ -5,7 +5,7 @@ import styles from '../ui/styles';
 export default function Loading({ navigation }) {
     setTimeout(() => {
         navigation.navigate('Logar-se');
-    }, 5000);
+    }, 500);
     
     return (
         <View style={styles.container}>
