@@ -21,8 +21,6 @@ export default function Register() {
 
   const [getTextButton, setTextButton] = React.useState('Registrar');
 
-  const [getError, setError] = useState(null);
-
   function handleRegister() {
     if (getEmail !== '' && getPassword !== '' && getPasswordC !== '' && getName !== '') {
       if (getPassword !== getPasswordC) {
